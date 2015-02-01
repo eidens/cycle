@@ -45,7 +45,7 @@
 (defn ^:dynamic remember-last-result
   [function initial]
   (let [prev (ref initial)] ; prev is result of the previous invocation (ref for thread safety)
-    (fn [] (dosync (alter prev function)))
+    (fn [] (dosync (alter prev function))))
   )
 
 
