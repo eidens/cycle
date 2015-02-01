@@ -46,12 +46,12 @@
   "Returns a function that calls the given function with the result of
   its previous invocation (or the given initial value, if it's the
   first invocation)."
-  [function initial]
+  [func initial]
   ; prev is result of the previous invocation
   ; using ref for thread safety
   (let [prev (ref initial)] 
     (fn []
-      (dosync (alter prev function))))
+      (dosync (alter prev func))))
   )
 
 

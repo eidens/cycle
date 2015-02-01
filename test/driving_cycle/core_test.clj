@@ -44,3 +44,25 @@
      )
     )
   )
+
+(deftest rand-cycle-test
+  (testing "rand-cycle"
+    (let [func (rand-cycle 1 3)]
+      (for [x (range 10000)]
+        (is (contains? '(1 2 3) (func)))  
+        )
+      )
+    )
+  )
+
+(deftest cycle-data-test
+  (testing "repeatedly rand-cycle"
+    (let [seq (cycle-data 1 3)
+          generated (take 10000 seq)]
+      (is (empty? (filter (fn [val] (not (or (= val 1)
+                                             (= val 2)
+                                             (= val 3))))
+                          generated)))
+      )
+    )
+  )
