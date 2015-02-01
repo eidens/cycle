@@ -33,3 +33,14 @@
     (is (= '(1999 2000 2001) (range-around 2000)) "basic example with slightly higher numbers")
     )
   )
+
+(deftest remember-last-result-test
+  (testing "stateful functions"
+    (let [func (fn [prev] (* prev -1))
+          testfunc (remember-last-result func 1)]
+      (is (= -1 (testfunc)) "first invocation: 1 * -1")
+      (is (= 1 (testfunc)) "second invocation: 1 * -1 * 1")
+      (is (= -1 (testfunc)) "second invocation: 1 * -1 * 1 * -1")
+     )
+    )
+  )
