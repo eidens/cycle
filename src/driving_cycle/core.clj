@@ -5,7 +5,7 @@
 
 
 
-(defn ^:dynamic inside
+(defn ^:dynamic inside-bounds
   [item lower upper]
   (= true ; necessary? can both even be false? 
      (<= lower item)
@@ -14,7 +14,7 @@
 
 (defn ^:dynamic filter-outside
   [lower upper coll]
-  (filter (fn [item] (inside item lower upper))
+  (filter (fn [item] (inside-bounds item lower upper))
           coll)
   )
 
@@ -45,7 +45,10 @@
 (defn ^:dynamic remember-last-result
   [function initial]
   (let [prev (ref initial)] ; prev is result of the previous invocation (ref for thread safety)
-    (fn [] (dosync (alter prev function))))
+    (fn []
+      (println "dosync, prev: " prev)
+      (dosync (alter prev function))
+      (deref prev)))
   )
 
 
@@ -62,21 +65,8 @@
 
 (defn -main
   [& args]
-;  (let [training-data (build-from-coll args)]
-;    (println training-data)
-;    (println (take 10 (generate-walk training-data)))
-;  )
-  (dotrace [range-around] 
-           (range-around 10))
-  (dotrace [inside] 
-           (inside 9 9 11))
-  (dotrace [filter-outside] 
-           (filter-outside 10 20 (range 0 30)))
-  (dotrace [rand-item]
-           (rand-item (range 0 10)))
-  (println (dotrace [next-item]
-                    ((next-item 0 10) 0)))
-  (println (dotrace [rand-cycle]
-                    ((rand-cycle 0 10))))
-  )
-
+  (let [training-data (build-from-coll args)]
+    (println training-data)
+    (println (take 10 (generate-walk training-data)))
+    )
+)
