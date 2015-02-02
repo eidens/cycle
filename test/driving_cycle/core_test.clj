@@ -2,18 +2,6 @@
   (:require [clojure.test :refer :all]
             [driving-cycle.core :refer :all]))
 
-(deftest inside-bounds-test
-  (testing "the basics"
-    (is (= true (inside-bounds 4 3 5)) "number within bounds")
-    (is (= false (inside-bounds 1 3 5)) "number below lower bound")
-    (is (= false (inside-bounds 6 3 5)) "number above upper bound")
-    )
-  (testing "edge cases"
-    (is (= true (inside-bounds 3 3 5)) "number on lower bound")
-    (is (= true (inside-bounds 5 3 5)) "number on upper bound")
-    )
-  )
-
 (deftest filter-outside-test
   (testing "the basics"
     (is (= '(5 6) (filter-outside 0 10 '(5 6))) "nothing to filter")
@@ -49,7 +37,7 @@
   (testing "rand-cycle"
     (let [func (rand-cycle 1 3)]
       (for [x (range 10000)]
-        (is (contains? '(1 2 3) (func)))  
+        (is (contains? '(1 2 3) (func)))
         )
       )
     )

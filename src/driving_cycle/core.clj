@@ -4,25 +4,16 @@
   (:gen-class))
 
 
-
-(defn ^:dynamic inside-bounds
-  [item lower upper]
-  (= true ; necessary? can both even be false? 
-     (<= lower item)
-     (<= item upper))
-  )
-
 (defn ^:dynamic filter-outside
   [lower upper coll]
-  (filter (fn [item] (inside-bounds item lower upper))
-          coll)
-  )
+  (filter (fn [item] (<= lower item upper))
+          coll))
 
 (defn ^:dynamic range-around
   [val]
   (let [distance 1 step 1]
     (range (- val distance) ; start
-           (+ val distance step) ; end of range is exclusive 
+           (+ val distance step) ; end of range is exclusive
            step)
     )
 )
@@ -49,7 +40,7 @@
   [func initial]
   ; prev is result of the previous invocation
   ; using ref for thread safety
-  (let [prev (ref initial)] 
+  (let [prev (ref initial)]
     (fn []
       (dosync (alter prev func))))
   )
