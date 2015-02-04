@@ -47,8 +47,8 @@
 (defn -main
   [& args]
   (let [training-data (take 1000 (cycle-data 0 100))
-        matrix (build-from-coll training-data)
-        walk (generate-walk matrix)]
+        matrix (markov/build-from-coll training-data)
+        walk (markov/generate-walk matrix)]
     (println training-data)
     (println matrix)
     (println (take 1000 walk))
