@@ -1,5 +1,6 @@
 (ns driving-cycle.core
   (:require [driving-cycle.common :as common]
+            [driving-cycle.input-data :as input]
             [markov.core :as markov])
   (:gen-class))
 
@@ -33,24 +34,17 @@
                                (range-around prev))))
   )
 
-(defn rand-cycle
+(defn simple-training-data
   [lower upper]
-  (common/proxy-with-prev-result (next-item lower upper)
-                                 lower)
-  )
-
-(defn cycle-data
-  [lower upper]
-  (repeatedly (rand-cycle lower upper))
-  )
+  (input/generate (next-item lower upper)
+                  lower))
 
 (defn -main
   [& args]
-  (let [training-data (take 1000 (cycle-data 0 100))
+  (let [training-data (take 1000 (simple-training-data 0 100))
         matrix (markov/build-from-coll training-data)
         walk (markov/generate-walk matrix)]
     (println training-data)
     (println matrix)
     (println (take 1000 walk))
-    )
-)
+    ))
