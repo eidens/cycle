@@ -1,6 +1,6 @@
 (ns driving-cycle.core
   (:require [driving-cycle.common :as common]
-            [driving-cycle.input-data :as input]
+            [driving-cycle.inputdata :as input]
             [markov.core :as markov])
   (:gen-class))
 

@@ -1,4 +1,4 @@
-(ns driving-cycle.input-data
+(ns driving-cycle.inputdata
   (:require [driving-cycle.common :as common])
   (:gen-class))
 
