@@ -1,16 +1,15 @@
 (ns driving-cycle.core
-  (use [markov.core :as markov])
-  (use [clojure.tools.trace :as trace])
-  (:require [driving-cycle.common :as common])
+  (:require [driving-cycle.common :as common]
+            [markov.core :as markov])
   (:gen-class))
 
 
-(defn ^:dynamic filter-outside
+(defn filter-outside
   [lower upper coll]
   (filter (fn [item] (<= lower item upper))
           coll))
 
-(defn ^:dynamic range-around
+(defn range-around
   [val]
   (let [distance 1 step 1]
     (range (- val distance) ; start
@@ -19,14 +18,14 @@
     )
 )
 
-(defn ^:dynamic rand-item
+(defn rand-item
   [coll]
   (first (shuffle coll))
   )
 
 ; returns a function that takes a value prev and returns
 ; a new value in prev's vicinity, but within the given bounds
-(defn ^:dynamic next-item
+(defn next-item
   [lower upper]
   (fn [prev]
     (rand-item (filter-outside lower
@@ -34,13 +33,13 @@
                                (range-around prev))))
   )
 
-(defn ^:dynamic rand-cycle
+(defn rand-cycle
   [lower upper]
   (common/proxy-with-prev-result (next-item lower upper)
                                  lower)
   )
 
-(defn ^:dynamic cycle-data
+(defn cycle-data
   [lower upper]
   (repeatedly (rand-cycle lower upper))
   )
