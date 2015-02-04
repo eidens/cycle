@@ -1,6 +1,7 @@
 (ns driving-cycle.core
   (use [markov.core :as markov])
   (use [clojure.tools.trace :as trace])
+  (:require [driving-cycle.common :as common])
   (:gen-class))
 
 
@@ -33,23 +34,10 @@
                                (range-around prev))))
   )
 
-(defn ^:dynamic remember-last-result
-  "Returns a function that calls the given function with the result of
-  its previous invocation (or the given initial value, if it's the
-  first invocation)."
-  [func initial]
-  ; prev is result of the previous invocation
-  ; using ref for thread safety
-  (let [prev (ref initial)]
-    (fn []
-      (dosync (alter prev func))))
-  )
-
-
 (defn ^:dynamic rand-cycle
   [lower upper]
-  (remember-last-result (next-item lower upper)
-                        lower)
+  (common/proxy-with-prev-result (next-item lower upper)
+                                 lower)
   )
 
 (defn ^:dynamic cycle-data
