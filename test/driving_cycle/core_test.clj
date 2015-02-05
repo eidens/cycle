@@ -12,10 +12,8 @@
 
 (deftest generate-test
   (testing "generation of a lazy sequence"
-    (let [add-one #(+ 1 %)
-          same-number #(+ 0 %)]
-      (is (= (take 100 (generate add-one 0))
-             (range 1 101 1))
-          "should add 1 to the previous number")
-      (is (every? #(= 3 %) (take 100 (generate same-number 3)))
-          "should always be the same number"))))
+    (is (= (take 100 (generate #(+ 1 %) 0))
+           (range 1 101 1))
+        "should add 1 to the previous number")
+    (is (every? #(= 3 %) (take 100 (generate (constantly 3) 3)))
+        "should always be the same number")))
