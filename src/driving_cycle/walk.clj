@@ -1,4 +1,4 @@
-(ns driving-cycle.core
+(ns driving-cycle.walk
   (:gen-class))
 
 (defn proxy-with-prev-result

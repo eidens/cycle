@@ -1,5 +1,5 @@
 (ns driving-cycle.drunkwalk
-  (:require [driving-cycle.core :as core]
+  (:require [driving-cycle.walk :as walk]
             [markov.core :as markov])
   (:gen-class))
 
@@ -49,7 +49,7 @@
 
   example output for (drunk-walk 0 2): (0 1 1 2 1 0)"
   [lower upper]
-  (core/generate (drunk-walker lower upper)
+  (walk/generate (drunk-walker lower upper)
                   lower))
 
 (defn -main

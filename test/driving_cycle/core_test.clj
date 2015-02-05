@@ -1,6 +1,6 @@
 (ns driving-cycle.core-test
   (:require [clojure.test :refer :all]
-            [driving-cycle.core :refer :all]))
+            [driving-cycle.walk :refer :all]))
 
 (deftest proxy-with-prev-result-test
   (testing "stateful functions"
