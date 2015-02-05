@@ -6,10 +6,11 @@
   result of its previous invocation (or the given initial value, if
   it's the first invocation)."
   [func initial]
-                                        ; prev is result of the previous invocation
-                                        ; using ref for thread safety
-  (let [prev (ref initial)]
+  (let [prev (ref initial)] ; using ref for thread safety
     (fn []
+      ; alter invokes func with the actual (deref-ed) value of prev
+      ; then sets prev to the return value of that invocation
+      ; finally returns the new actual value of prev
       (dosync (alter prev func))))
   )
 
