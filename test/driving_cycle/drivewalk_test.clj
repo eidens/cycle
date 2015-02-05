@@ -4,6 +4,6 @@
 
 (deftest drive-walker-test
   (testing "the basics"
-    (let [data-point {:v 0, :a 0}]
-      (is (every? #(= data-point %) (take 100 (drive-walk)))
-          "should always be the same data point at the moment"))))
+    (is (every? #(= true (number? (% :v)) (number? (% :a)))
+                (take 100 (drive-walk)))
+        "should always return a data point with velocity and acceleration")))
