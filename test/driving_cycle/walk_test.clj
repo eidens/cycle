@@ -8,7 +8,7 @@
           testfunc (proxy-with-prev-result func 1)]
       (is (= -1 (testfunc)) "first invocation: 1 * -1")
       (is (= 1 (testfunc)) "second invocation: 1 * -1 * 1")
-      (is (= -1 (testfunc)) "second invocation: 1 * -1 * 1 * -1"))))
+      (is (= -1 (testfunc)) "third invocation: 1 * -1 * 1 * -1"))))
 
 (deftest generate-test
   (testing "generation of a lazy sequence"

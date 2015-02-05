@@ -1,6 +1,5 @@
 (ns driving-cycle.drunkwalk
-  (:require [driving-cycle.walk :as walk]
-            [markov.core :as markov]))
+  (:require [driving-cycle.walk :as walk]))
 
 (defn filter-outside
   "Returns a new collection without the values strictly smaller than
