@@ -1,11 +1,11 @@
 (ns driving-cycle.core
-  (:require [driving-cycle.drunkwalk :as drunkwalk]
+  (:require [driving-cycle.drunkwalk :as walk]
             [markov.core :as markov])
   (:gen-class))
 
 (defn -main
   [& args]
-  (let [training-data (take 1000 (drunkwalk/drunk-walk 0 100))
+  (let [training-data (take 1000 (walk/drunk-walk 0 100))
         matrix (markov/build-from-coll training-data)
         walk (markov/generate-walk matrix)]
     (println training-data)
