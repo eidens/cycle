@@ -1,4 +1,4 @@
-(ns driving-cycle.core-test
+(ns driving-cycle.walk-test
   (:require [clojure.test :refer :all]
             [driving-cycle.walk :refer :all]))
 
