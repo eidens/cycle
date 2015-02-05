@@ -1,5 +1,4 @@
-(ns driving-cycle.walk
-  (:gen-class))
+(ns driving-cycle.walk)
 
 (defn proxy-with-prev-result
   "Returns an arg-less function that calls the given function with the

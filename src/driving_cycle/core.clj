@@ -1,7 +1,6 @@
 (ns driving-cycle.core
   (:require [driving-cycle.drunkwalk :as walk]
-            [markov.core :as markov])
-  (:gen-class))
+            [markov.core :as markov]))
 
 (defn -main
   [& args]
