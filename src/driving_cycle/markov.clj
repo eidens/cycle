@@ -29,7 +29,7 @@
   (hash-map (key entry)
             (frequencies (val entry))))
 
-(defn gen-matrix
+(defn matrix
   [order walk]
   (let [partitioned-walk (partition-walk order walk)
         causes-and-effects (split-into-cause-and-effect partitioned-walk)
