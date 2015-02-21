@@ -7,7 +7,7 @@
     (let [walk '(0 1 0)
           matrix {'(0) {'(1) 1}
                   '(1) {'(0) 1}}]
-      (is (= matrix (markov/matrix 1 walk))
+      (is (= matrix (markov/freq-matrix 1 walk))
           "markov matrix should be correctly generated"))))
 
 (deftest complex-markov-matrix-test
@@ -16,7 +16,7 @@
           matrix {'(0) {'(1) 1, '(2) 1}
                   '(1) {'(0) 1, '(1) 1, '(2) 1}
                   '(2) {'(1) 1, '(3) 1}}]
-      (is (= matrix (markov/matrix 1 walk))
+      (is (= matrix (markov/freq-matrix 1 walk))
           "markov matrix should be correctly generated"))))
 
 (deftest non-numbers-markov-matrix-test
@@ -24,5 +24,5 @@
     (let [walk '((0 0) {1 1} (0 0) 1)
           matrix {'((0 0)) {'({1 1}) 1, '(1) 1}
                   '({1 1}) {'((0 0)) 1}}]
-      (is (= matrix (markov/matrix 1 walk))
+      (is (= matrix (markov/freq-matrix 1 walk))
           "markov matrix should be correctly generated"))))

@@ -33,7 +33,7 @@
   [causes-and-effects]
   (reduce merge-causes-effects causes-and-effects))
 
-(defn matrix
+(defn freq-matrix
   [order walk]
   (let [partitioned-walk (partition-walk order walk) ; lazy
         causes-and-effects (causes-and-effects partitioned-walk)] ; still lazy
