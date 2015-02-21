@@ -1,5 +1,4 @@
-(ns driving-cycle.markov
-  (:require [clojure.tools.trace :refer :all]))
+(ns driving-cycle.markov)
 
 (defn- partition-walk
   "Partition the given collection of data points into collections with
@@ -30,7 +29,7 @@
   [map other-map]
   (merge-with merge-with-addition map other-map))
 
-(defn- ^:dynamic effect-frequencies
+(defn- effect-frequencies
   [causes-and-effects]
   (reduce merge-causes-effects causes-and-effects))
 
@@ -38,5 +37,4 @@
   [order walk]
   (let [partitioned-walk (partition-walk order walk) ; lazy
         causes-and-effects (causes-and-effects partitioned-walk)] ; still lazy
-    (dotrace [effect-frequencies]
-             (effect-frequencies causes-and-effects))))
+    (effect-frequencies causes-and-effects)))
