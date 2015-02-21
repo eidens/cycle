@@ -1,4 +1,5 @@
-(ns driving-cycle.markov)
+(ns driving-cycle.markov
+  (:require [clojure.tools.trace :refer :all]))
 
 (defn- partition-walk
   "Partition the given collection of data points into collections with
@@ -11,27 +12,31 @@
                size-next
                walk)))
 
-(defn- split-into-cause-and-effect
+(defn- split-cause-effect
+  [partition]
+  (let [cause (butlast partition)
+        effect (hash-map (take-last 1 partition) 1)]
+    (hash-map cause effect)))
+
+(defn- causes-and-effects
   [partitioned-walk]
-  (map #(hash-map (butlast %) (take-last 1 %))
-       partitioned-walk))
+  (map split-cause-effect partitioned-walk))
 
-(defn- merge-with-concat
+(defn- merge-with-addition
   [map other-map]
-  (merge-with concat map other-map))
+  (merge-with + map other-map))
 
-(defn- group-by-cause
+(defn- merge-causes-effects
+  [map other-map]
+  (merge-with merge-with-addition map other-map))
+
+(defn- ^:dynamic effect-frequencies
   [causes-and-effects]
-  (reduce merge-with-concat causes-and-effects))
-
-(defn- aggregate-effects
-  [entry]
-  (hash-map (key entry)
-            (frequencies (val entry))))
+  (reduce merge-causes-effects causes-and-effects))
 
 (defn matrix
   [order walk]
-  (let [partitioned-walk (partition-walk order walk)
-        causes-and-effects (split-into-cause-and-effect partitioned-walk)
-        effects-by-causes (group-by-cause causes-and-effects)]
-    (reduce merge (map aggregate-effects effects-by-causes))))
+  (let [partitioned-walk (partition-walk order walk) ; lazy
+        causes-and-effects (causes-and-effects partitioned-walk)] ; still lazy
+    (dotrace [effect-frequencies]
+             (effect-frequencies causes-and-effects))))
