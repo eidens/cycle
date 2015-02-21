@@ -17,24 +17,12 @@
         effect (hash-map (take-last 1 partition) 1)]
     (hash-map cause effect)))
 
-(defn- causes-and-effects
-  [partitioned-walk]
-  (map split-cause-effect partitioned-walk))
-
-(defn- merge-with-addition
-  [map other-map]
-  (merge-with + map other-map))
-
 (defn- merge-causes-effects
   [map other-map]
-  (merge-with merge-with-addition map other-map))
-
-(defn- effect-frequencies
-  [causes-and-effects]
-  (reduce merge-causes-effects causes-and-effects))
+  (merge-with (partial merge-with +) map other-map))
 
 (defn freq-matrix
   [order walk]
   (let [partitioned-walk (partition-walk order walk) ; lazy
-        causes-and-effects (causes-and-effects partitioned-walk)] ; still lazy
-    (effect-frequencies causes-and-effects)))
+        causes-effects (map split-cause-effect partitioned-walk)] ; still lazy
+    (reduce merge-causes-effects causes-effects)))
