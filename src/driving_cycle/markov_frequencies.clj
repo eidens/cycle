@@ -1,4 +1,4 @@
-(ns driving-cycle.markov)
+(ns driving-cycle.markov-frequencies)
 
 (defn- partition-walk
   "Partition the given collection of data points into collections with
