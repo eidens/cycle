@@ -1,22 +1,16 @@
 (ns driving-cycle.markov-probabilities
   (:require [driving-cycle.markov-frequencies :as frequencies]))
 
-(defn- prob-map
-  [total map freq]
-  (merge map
-         (hash-map (key freq)
-                   (/ (val freq) total))))
+(defn- transform-map
+  [map func]
+  (into {} (for [[k v] map] [k (func v)])))
 
 (defn- calc-probabilities
-  [prob-matrix entry-freq-matrix]
-  (let [frequencies (second entry-freq-matrix)
-        total (reduce + 0 (vals frequencies))
-        probabilities (reduce (partial prob-map total) {} frequencies)]
-    (merge prob-matrix
-           (hash-map (first entry-freq-matrix)
-                     probabilities))))
+  [frequencies]
+  (let [total (reduce + 0 (vals frequencies))]
+    (transform-map frequencies (partial * (/ 1 total)))))
 
 (defn matrix
   [order walk]
   (let [frequency-matrix (frequencies/matrix order walk)]
-    (reduce calc-probabilities {} frequency-matrix)))
+    (transform-map frequency-matrix calc-probabilities)))
