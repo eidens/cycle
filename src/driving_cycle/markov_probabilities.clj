@@ -8,10 +8,13 @@
                    (/ (val freq) total))))
 
 (defn- calc-probabilities
-  [matrix frequencies]
-  (let [total (reduce + 0 (vals frequencies))
+  [prob-matrix entry-freq-matrix]
+  (let [frequencies (second entry-freq-matrix)
+        total (reduce + 0 (vals frequencies))
         probabilities (reduce (partial prob-map total) {} frequencies)]
-    (merge matrix probabilities)))
+    (merge prob-matrix
+           (hash-map (first entry-freq-matrix)
+                     probabilities))))
 
 (defn matrix
   [order walk]
