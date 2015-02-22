@@ -11,6 +11,7 @@
     (transform-map frequencies (partial * (/ 1 total)))))
 
 (defn matrix
-  [order walk]
-  (let [frequency-matrix (frequencies/matrix order walk)]
-    (transform-map frequency-matrix calc-probabilities)))
+  ([frequency-matrix]
+   (transform-map frequency-matrix calc-probabilities))
+  ([order walk]
+   (matrix (frequencies/matrix order walk))))
