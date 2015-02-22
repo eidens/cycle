@@ -21,7 +21,7 @@
   [map other-map]
   (merge-with (partial merge-with +) map other-map))
 
-(defn freq-matrix
+(defn matrix
   [order walk]
   (let [partitioned-walk (partition-walk order walk) ; lazy
         causes-effects (map split-cause-effect partitioned-walk)] ; still lazy

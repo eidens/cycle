@@ -1,13 +1,13 @@
 (ns driving-cycle.markov-frequencies-test
   (:require [clojure.test :refer :all]
-            [driving-cycle.markov-frequencies :as markov]))
+            [driving-cycle.markov-frequencies :as frequencies]))
 
 (deftest basic-freq-matrix-test
   (testing "generation of a basic markov matrix"
     (let [walk '(0 1 0)
           matrix {'(0) {'(1) 1}
                   '(1) {'(0) 1}}]
-      (is (= matrix (markov/freq-matrix 1 walk))
+      (is (= matrix (frequencies/matrix 1 walk))
           "markov matrix should be correctly generated"))))
 
 (deftest complex-freq-matrix-test
@@ -16,7 +16,7 @@
           matrix {'(0) {'(1) 1, '(2) 1}
                   '(1) {'(0) 1, '(1) 1, '(2) 1}
                   '(2) {'(1) 1, '(3) 1}}]
-      (is (= matrix (markov/freq-matrix 1 walk))
+      (is (= matrix (frequencies/matrix 1 walk))
           "markov matrix should be correctly generated"))))
 
 (deftest non-numbers-freq-matrix-test
@@ -24,5 +24,5 @@
     (let [walk '((0 0) {1 1} (0 0) 1)
           matrix {'((0 0)) {'({1 1}) 1, '(1) 1}
                   '({1 1}) {'((0 0)) 1}}]
-      (is (= matrix (markov/freq-matrix 1 walk))
+      (is (= matrix (frequencies/matrix 1 walk))
           "markov matrix should be correctly generated"))))
