@@ -3,6 +3,7 @@
             [driving-cycle.drunkwalk]
             [driving-cycle.drivewalk]
             [driving-cycle.markov-frequencies]
+            [driving-cycle.markov-probabilities]
             [markov.core :as markov]))
 
 (defn -main
