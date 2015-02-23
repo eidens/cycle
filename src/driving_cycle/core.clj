@@ -8,9 +8,9 @@
 
 (defn -main
   [& args]
-  (let [training-data (take 1000 (driving-cycle.drunkwalk/drunk-walk 0 100))
-        matrix (markov/build-from-coll training-data)
+  (let [training-data (take 1000 (driving-cycle.drivewalk/drive-walk))
+        matrix (driving-cycle.markov-probabilities/matrix 3 training-data)
         walk (markov/generate-walk matrix)]
-    (println training-data)
-    (println matrix)
-    (println (take 1000 walk))))
+    (println "training-data: " training-data)
+    (println "matrix: " matrix)
+    (println "walk: " (take 1000 walk))))
