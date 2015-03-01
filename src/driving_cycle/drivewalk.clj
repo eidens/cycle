@@ -2,6 +2,12 @@
   (:require [driving-cycle.walk :as walk]
             [clojure.math.numeric-tower :as math]))
 
+(defn- data-point
+  [velocity acceleration rudder]
+  {:v velocity,
+   :a acceleration,
+   :r rudder})
+
 (defn- min-velocity [] -20)
 (defn- max-velocity [] 160)
 
@@ -66,7 +72,7 @@
   [old-velocity acceleration old-rudder]
   (let [lower (min-rudder)
         upper (max-rudder)]
-    (bounds lower (+ old-rudder (rand-around-zero 10)) upper))  )
+    (bounds lower (+ old-rudder (rand-around-zero 10)) upper)))
 
 (defn- next-data-point
   "Return the next data point given the previous one.
@@ -75,10 +81,9 @@
   acceleration receive as arguments the velocity and acceleration of
   the previous point."
   [prev next-velocity next-acceleration next-rudder]
-  {:v (next-velocity (:v prev) (:a prev)),
-   :a (next-acceleration (:v prev) (:a prev))
-   :r (next-rudder (:v prev) (:a prev) (:r prev))}
-  )
+  (data-point (next-velocity (:v prev) (:a prev))
+              (next-acceleration (:v prev) (:a prev))
+              (next-rudder (:v prev) (:a prev) (:r prev))))
 
 (defn drive-walk
   "Generate a driving cycle consisting of a chain of data points with
