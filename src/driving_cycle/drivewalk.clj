@@ -8,6 +8,9 @@
 (defn- min-acceleration [] -10)
 (defn- max-acceleration [] 30)
 
+(defn- min-rudder [] -100)
+(defn- max-rudder [] 100)
+
 (defn- bounds
   "Returns the given number, if it is within the given lower and upper
   bound. Otherwise it returns the value of the bound to which the
@@ -57,8 +60,13 @@
         upper (if (close-to old-velocity (max-velocity))
                 0
                 (max-acceleration))]
-    (println "bounds: " lower upper old-velocity)
     (bounds lower (+ acceleration (rand-around-zero 2)) upper)))
+
+(defn- new-rudder
+  [old-velocity acceleration old-rudder]
+  (let [lower (min-rudder)
+        upper (max-rudder)]
+    (bounds lower (+ old-rudder (rand-around-zero 10)) upper))  )
 
 (defn- next-data-point
   "Return the next data point given the previous one.
@@ -66,14 +74,15 @@
   The supplied functions to calculate the new velocity and
   acceleration receive as arguments the velocity and acceleration of
   the previous point."
-  [prev next-velocity next-acceleration]
+  [prev next-velocity next-acceleration next-rudder]
   {:v (next-velocity (:v prev) (:a prev)),
-   :a (next-acceleration (:v prev) (:a prev))}
+   :a (next-acceleration (:v prev) (:a prev))
+   :r (next-rudder (:v prev) (:a prev) (:r prev))}
   )
 
 (defn drive-walk
   "Generate a driving cycle consisting of a chain of data points with
   the velocity and acceleration at that point."
   []
-  (walk/generate #(next-data-point % new-velocity new-acceleration)
-                 {:v 0 :a 0}))
+  (walk/generate #(next-data-point % new-velocity new-acceleration new-rudder)
+                 {:v 0 :a 0 :r 0}))
