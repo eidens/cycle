@@ -22,7 +22,9 @@
 (defn- to-file [output-file seq]
   (log/info "writing data to file" output-file)
   (time (with-open [wrtr (io/writer output-file)]
-          (.write wrtr (str seq)))))
+          (doseq [item seq]
+            (.write wrtr (str item))
+            (.newLine wrtr)))))
 
 (defn- gen-drivewalk [options]
   (let [output-file (:output-file options)
