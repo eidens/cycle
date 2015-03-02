@@ -35,10 +35,25 @@
       (to-file output-file walk)
       (println walk))))
 
+(defn- gen-markov-frequencies [options]
+  (let [output-file (:output-file options)
+        input-file (:input-file options)
+        walk-length (:walk-length options)
+        walk (if input-file
+               (with-open [rdr (clojure.java.io/reader input-file)]
+                 (log/info "generating markov frequencies with data from file" input-file)
+                 (reduce conj [] (map read-string (line-seq rdr))))
+               (take walk-length (driving-cycle.drivewalk/drive-walk)))
+        matrix (driving-cycle.markov-frequencies/matrix 1 walk)]
+    (if output-file
+      (to-file output-file matrix)
+      (println matrix))))
+
 (defn -main
   [& args]
   (let [cli-args (cli/parse-opts args cli-options)
         options (:options cli-args)
         command (first (:arguments cli-args))]
     (case command
-      "drivewalk" (gen-drivewalk options))))
+      "drivewalk" (gen-drivewalk options)
+      "frequencies" (gen-markov-frequencies options))))
