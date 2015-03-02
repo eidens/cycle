@@ -6,7 +6,9 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [janiczek/markov "0.3.0"]
                  [org.clojure/tools.trace "0.7.8"]
-                 [org.clojure/math.numeric-tower "0.0.4"]]
+                 [org.clojure/math.numeric-tower "0.0.4"]
+                 [org.clojure/tools.cli "0.3.1"]
+                 [org.clojure/tools.logging "0.3.1"]]
   :main ^:skip-aot driving-cycle.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
