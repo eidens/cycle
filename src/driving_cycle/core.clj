@@ -23,9 +23,9 @@
     :id :markov-order
     :default 1
     :parse-fn #(Integer/parseInt %)]
-   ["-p" "--parallel NUM"
-    :id :parallel
-    :default 1
+   ["-p" "--partition-size SIZE"
+    :id :partition-size
+    :default 100000
     :parse-fn #(Integer/parseInt %)]])
 
 (defn- write-seq [output-file seq]
@@ -65,21 +65,18 @@
   (let [partitioned-walk (partition partition-size walk)
         matrices (pmap (partial generate-frequencies order) partitioned-walk)]
     (log/info "merging frequency matrices")
-    (time (reduce merge-frequencies matrices))))
+    (time (reduce merge-frequencies {} matrices))))
 
 (defn- markov-frequencies [options]
   (let [output-file (:output-file options)
         input-file (:input-file options)
         walk-length (:walk-length options)
         markov-order (:markov-order options)
-        parallel (:parallel options)
-        partition-size (max (math/round (/ walk-length parallel)) 1000)
+        partition-size (:partition-size options)
         walk (if input-file
                (read-seq input-file)
                (generate-walk walk-length))
-        matrix (if (> parallel 1)
-                 (time (parallel-frequencies markov-order walk partition-size))
-                 (generate-frequencies markov-order walk))]
+        matrix (parallel-frequencies markov-order walk partition-size)]
     (if output-file
       (write-seq output-file matrix)
       (println matrix))))

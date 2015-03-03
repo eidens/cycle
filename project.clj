@@ -11,4 +11,7 @@
                  [org.clojure/tools.logging "0.3.1"]]
   :main ^:skip-aot driving-cycle.core
   :target-path "target/%s"
-  :profiles {:uberjar {:aot :all}})
+  :profiles {:uberjar {:aot :all}}
+  :jvm-opts ["-Xmx6g" "-XX:+UseConcMarkSweepGC" "-XX:+UseParNewGC"
+             "-XX:+CMSParallelRemarkEnabled" "-XX:+AggressiveOpts"
+             "-XX:+UseFastAccessorMethods" "-server"])
