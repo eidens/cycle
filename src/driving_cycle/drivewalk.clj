@@ -8,14 +8,14 @@
    :a acceleration,
    :r rudder})
 
-(defn- min-velocity [] -20)
-(defn- max-velocity [] 160)
+(def min-velocity -20)
+(def max-velocity 160)
 
-(defn- min-acceleration [] -10)
-(defn- max-acceleration [] 30)
+(def min-acceleration -10)
+(def max-acceleration 30)
 
-(defn- min-rudder [] -100)
-(defn- max-rudder [] 100)
+(def min-rudder -100)
+(def max-rudder 100)
 
 (defn- bounds
   "Returns the given number, if it is within the given lower and upper
@@ -52,26 +52,26 @@
   Thus the new velocity is simply the sum of the old velocity and the
   acceleration."
   [old-velocity acceleration]
-  (let [lower (min-velocity)
-        upper (max-velocity)]
+  (let [lower min-velocity
+        upper max-velocity]
     (bounds lower (+ old-velocity acceleration) upper)))
 
 (defn- new-acceleration
   "Returns a new, random, acceleration that is equal to, or 2 below or
   above the previous one."
   [old-velocity acceleration]
-  (let [lower (if (close-to old-velocity (min-velocity))
+  (let [lower (if (close-to old-velocity min-velocity)
                 0
-                (min-acceleration))
-        upper (if (close-to old-velocity (max-velocity))
+                min-acceleration)
+        upper (if (close-to old-velocity max-velocity)
                 0
-                (max-acceleration))]
+                max-acceleration)]
     (bounds lower (+ acceleration (rand-around-zero 2)) upper)))
 
 (defn- new-rudder
   [old-velocity acceleration old-rudder]
-  (let [lower (min-rudder)
-        upper (max-rudder)]
+  (let [lower min-rudder
+        upper max-rudder]
     (bounds lower (+ old-rudder (rand-around-zero 10)) upper)))
 
 (defn- next-data-point
@@ -91,3 +91,11 @@
   []
   (walk/generate #(next-data-point % new-velocity new-acceleration new-rudder)
                  {:v 0 :a 0 :r 0}))
+
+(defn all-possible-data-points
+  "Returns a lazy sequence of all possible data points."
+  []
+  (for [velocity (range min-velocity max-velocity)
+        acceleration (range min-acceleration max-acceleration)
+        rudder (range min-rudder max-rudder)]
+    (data-point velocity acceleration rudder)))

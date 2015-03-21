@@ -8,7 +8,9 @@
                  [org.clojure/tools.trace "0.7.8"]
                  [org.clojure/math.numeric-tower "0.0.4"]
                  [org.clojure/tools.cli "0.3.1"]
-                 [org.clojure/tools.logging "0.3.1"]]
+                 [org.clojure/tools.logging "0.3.1"]
+                 [org.clojure/java.jdbc "0.3.6"]
+                 [mysql/mysql-connector-java "5.1.25"]]
   :main ^:skip-aot driving-cycle.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}}

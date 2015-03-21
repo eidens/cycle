@@ -4,6 +4,7 @@
             [driving-cycle.drivewalk]
             [driving-cycle.markov-frequencies]
             [driving-cycle.markov-probabilities]
+            [driving-cycle.io]
             [markov.core :as markov]
             [clojure.tools.cli :as cli]
             [clojure.java.io :as io]
@@ -50,7 +51,7 @@
         walk (generate-walk walk-length)]
     (if output-file
       (write-seq output-file walk)
-      (println walk))))
+      (time (driving-cycle.io/persist walk)))))
 
 (defn- generate-frequencies [order walk]
   (log/info "generating frequency matrix with order" order)
@@ -81,6 +82,10 @@
       (write-seq output-file matrix)
       (println matrix))))
 
+(defn- init-db [options]
+  (let [possible-points (driving-cycle.drivewalk/all-possible-data-points)]
+    (time (driving-cycle.io/persist possible-points))))
+
 (defn -main
   [& args]
   (let [cli-args (cli/parse-opts args cli-options)
@@ -88,4 +93,5 @@
         command (first (:arguments cli-args))]
     (case command
       "drivewalk" (drivewalk options)
-      "frequencies" (markov-frequencies options))))
+      "frequencies" (markov-frequencies options)
+      "dbinit" (init-db options))))
