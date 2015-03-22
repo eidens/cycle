@@ -1,10 +1,9 @@
 (ns driving-cycle.core
-  (:require [driving-cycle.walk]
-            [driving-cycle.drunkwalk]
+  (:require [driving-cycle.drunkwalk]
             [driving-cycle.drivewalk]
-            [driving-cycle.markov-frequencies]
-            [driving-cycle.markov-probabilities]
-            [markov.core :as markov]
+            [eidens.markov.frequencies]
+            [eidens.markov.probabilities]
+            [eidens.markov.walk]
             [clojure.tools.cli :as cli]
             [clojure.java.io :as io]
             [clojure.tools.logging :as log]
@@ -54,7 +53,7 @@
 
 (defn- generate-frequencies [order walk]
   (log/info "generating frequency matrix with order" order)
-  (time (driving-cycle.markov-frequencies/matrix order walk)))
+  (time (eidens.markov.frequencies/matrix order walk)))
 
 (defn- merge-frequencies
   [map other-map]

@@ -1,5 +1,5 @@
 (ns driving-cycle.drivewalk
-  (:require [driving-cycle.walk :as walk]
+  (:require [eidens.markov.walk :as walk]
             [clojure.math.numeric-tower :as math]))
 
 (defn- data-point
